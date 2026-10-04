@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gaita de Slide - Sistema Harmônico</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #0b1220;
+            padding: 25px 15px;
+            text-align: center;
+            border-bottom: 2px solid #374151;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            color: #cbd5e1;
+            font-size: 16px;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #facc15;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #e5e7eb;
+        }
+
+        select,
+        button {
+            width: 100%;
+            padding: 13px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+        }
+
+        select {
+            background: #ffffff;
+            color: #111827;
+        }
+
+        button {
+            background: #facc15;
+            color: #111827;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: #fde047;
+        }
+
+        .resultado {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .nota-principal {
+            font-size: 58px;
+            font-weight: bold;
+            color: #facc15;
+            margin: 15px 0;
+        }
+
+        .acorde {
+            font-size: 28px;
+            font-weight: bold;
+            color: #93c5fd;
+        }
+
+        .slide {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .casa {
+            background: #111827;
+            border: 1px solid #4b5563;
+            border-radius: 10px;
+            padding: 15px 8px;
+            text-align: center;
+        }
+
+        .casa strong {
+            display: block;
+            color: #facc15;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .casa span {
+            color: #d1d5db;
+        }
+
+        .info {
+            line-height: 1.7;
+            color: #d1d5db;
+        }
+
+        .tabela {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .tabela th,
+        .tabela td {
+            border: 1px solid #374151;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .tabela th {
+            background: #111827;
+            color: #facc15;
+        }
+
+        .tabela td {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 15px;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 25px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .nota-principal {
+                font-size: 45px;
+            }
+
+            .acorde {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🎵 Gaita de Slide</h1>
+    <p>Sistema Harmônico Interativo</p>
+</header>
+
+<main class="container">
+
+    <section class="card">
+        <h2>🎼 Sistema Harmônico</h2>
+
+        <p class="info">
+            Selecione uma tonalidade para visualizar as notas,
+            acordes e posições correspondentes no sistema.
+        </p>
+
+        <div class="controls">
+
+            <div>
+                <label for="tom">Tonalidade</label>
+
+                <select id="tom">
+                    <option value="C">Dó (C)</option>
+                    <option value="C#">Dó# (C#)</option>
+                    <option value="D">Ré (D)</option>
+                    <option value="D#">Ré# (D#)</option>
+                    <option value="E">Mi (E)</option>
+                    <option value="F">Fá (F)</option>
+                    <option value="F#">Fá# (F#)</option>
+                    <option value="G">Sol (G)</option>
+                    <option value="G#">Sol# (G#)</option>
+                    <option value="A">Lá (A)</option>
+                    <option value="A#">Lá# (A#)</option>
+                    <option value="B">Si (B)</option>
+                </select>
+            </div>
+
+            <div>
+                <label>&nbsp;</label>
+                <button onclick="calcular()">Mostrar Sistema</button>
+            </div>
+
+        </div>
+
+        <div class="resultado">
+
+            <div>Nota principal</div>
+
+            <div class="nota-principal" id="notaPrincipal">
+                C
+            </div>
+
+            <div>Acorde principal</div>
+
+            <div class="acorde" id="acordePrincipal">
+                C
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="card">
+
+        <h2>🎸 Escala Harmônica</h2>
+
+        <div class="slide" id="escala"></div>
+
+    </section>
+
+
+    <section class="card">
+
+        <h2>🎹 Campo Harmônico</h2>
+
+        <table class="tabela">
+
+            <thead>
+                <tr>
+                    <th>Grau</th>
+                    <th>Nota</th>
+                    <th>Acorde</th>
+                    <th>Função</th>
+                </tr>
+            </thead>
+
+            <tbody id="campoHarmonico"></tbody>
+
+        </table>
+
+    </section>
+
+
+    <section class="card">
+
+        <h2>📚 Como utilizar</h2>
+
+        <div class="info">
+
+            <p>
+                <strong>1.</strong>
+                Escolha uma tonalidade no menu.
+            </p>
+
+            <p>
+                <strong>2.</strong>
+                Clique em "Mostrar Sistema".
+            </p>
+
+            <p>
+                <strong>3.</strong>
+                Observe a escala e o campo harmônico.
+            </p>
+
+            <p>
+                <strong>4.</strong>
+                Use as informações para estudar
+                acompanhamento, improvisação e criação de melodias.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+    Gaita de Slide • Sistema Harmônico
+</footer>
+
+
+<script>
+
+    const notas = [
+        "C",
+        "C#",
+        "D",
+        "D#",
+        "E",
+        "F",
+        "F#",
+        "G",
+        "G#",
+        "A",
+        "A#",
+        "B"
+    ];
+
+    const nomesGraus = [
+        "I",
+        "II",
+        "III",
+        "IV",
+        "V",
+        "VI",
+        "VII"
+    ];
+
+    const funcoes = [
+        "Tônica",
+        "Subdominante relativa",
+        "Tônica relativa",
+        "Subdominante",
+        "Dominante",
+        "Tônica relativa",
+        "Dominante"
+    ];
+
+    const intervalos = [
+        0,
+        2,
+        4,
+        5,
+        7,
+        9,
+        11
+    ];
+
+    function notaComIntervalo(nota, intervalo) {
+
+        const posicao = notas.indexOf(nota);
+
+        if (posicao === -1) {
+            return nota;
+        }
+
+        return notas[(posicao + intervalo) % 12];
+    }
+
+
+    function calcular() {
+
+        const tom = document.getElementById("tom").value;
+
+        const escala = document.getElementById("escala");
+
+        const campo = document.getElementById("campoHarmonico");
+
+        const notaPrincipal =
+            document.getElementById("notaPrincipal");
+
+        const acordePrincipal =
+            document.getElementById("acordePrincipal");
+
+
+        notaPrincipal.textContent = tom;
+
+        acordePrincipal.textContent = tom;
+
+
+        escala.innerHTML = "";
+
+        campo.innerHTML = "";
+
+
+        for (let i = 0; i < intervalos.length; i++) {
+
+            const nota =
+                notaComIntervalo(tom, intervalos[i]);
+
+
+            const casa =
+                document.createElement("div");
+
+            casa.className = "casa";
+
+            casa.innerHTML =
+                "<strong>" +
+                nomesGraus[i] +
+                "</strong>" +
+                "<span>" +
+                nota +
+                "</span>";
+
+            escala.appendChild(casa);
+
+
+            let tipo = "m";
+
+            if (
+                i === 0 ||
+                i === 3 ||
+                i === 4
+            ) {
+                tipo = "";
+            }
+
+            if (i === 6) {
+                tipo = "°";
+            }
+
+
+            const acorde =
+                nota + tipo;
+
+
+            const linha =
+                document.createElement("tr");
+
+
+            linha.innerHTML =
+                "<td>" +
+                nomesGraus[i] +
+                "</td>" +
+
+                "<td>" +
+                nota +
+                "</td>" +
+
+                "<td><strong>" +
+                acorde +
+                "</strong></td>" +
+
+                "<td>" +
+                funcoes[i] +
+                "</td>";
+
+
+            campo.appendChild(linha);
+        }
+    }
+
+
+    calcular();
+
+</script>
+
+</body>
+</html>
